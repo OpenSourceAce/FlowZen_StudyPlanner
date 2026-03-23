@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FlowZen — Smart Study Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-icon">◈</span>
+      <span class="logo-text">FlowZen</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-page="dashboard">
+        <span class="nav-icon">⬡</span> Dashboard
+      </a>
+      <a href="#" class="nav-item" data-page="subjects">
+        <span class="nav-icon">◧</span> Subjects
+      </a>
+      <a href="#" class="nav-item" data-page="tasks">
+        <span class="nav-icon">◫</span> Tasks
+      </a>
+      <a href="#" class="nav-item" data-page="schedule">
+        <span class="nav-icon">◩</span> Schedule
+      </a>
+      <a href="#" class="nav-item" data-page="timer">
+        <span class="nav-icon">◎</span> Focus Timer
+      </a>
+      <a href="#" class="nav-item" data-page="progress">
+        <span class="nav-icon">◈</span> Progress
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar" id="userAvatar">S</div>
+        <div class="user-info">
+          <span class="user-name" id="sidebarUserName">Student</span>
+          <span class="user-role">Scholar</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Top Bar -->
+    <header class="topbar">
+      <button class="menu-toggle" id="menuToggle">☰</button>
+      <div class="topbar-title" id="pageTitle">Dashboard</div>
+      <div class="topbar-actions">
+        <button class="btn-icon" id="notifBtn" title="Notifications">🔔</button>
+        <button class="btn-primary" id="quickAddBtn">+ Quick Add</button>
+      </div>
+    </header>
+
+    <!-- DASHBOARD -->
+    <section class="page active" id="page-dashboard">
+      <div class="page-header">
+        <h1 class="page-heading">Good <span id="greetingTime">morning</span>, <span id="greetingName">Scholar</span> 👋</h1>
+        <p class="page-sub">Here's your study overview for today.</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card accent-green">
+          <div class="stat-icon">📚</div>
+          <div class="stat-body">
+            <span class="stat-value" id="statSubjects">0</span>
+            <span class="stat-label">Subjects</span>
+          </div>
+        </div>
+        <div class="stat-card accent-blue">
+          <div class="stat-icon">✅</div>
+          <div class="stat-body">
+            <span class="stat-value" id="statTasksDone">0</span>
+            <span class="stat-label">Tasks Done</span>
+          </div>
+        </div>
+        <div class="stat-card accent-orange">
+          <div class="stat-icon">⏳</div>
+          <div class="stat-body">
+            <span class="stat-value" id="statTasksPending">0</span>
+            <span class="stat-label">Tasks Pending</span>
+          </div>
+        </div>
+        <div class="stat-card accent-purple">
+          <div class="stat-icon">🔥</div>
+          <div class="stat-body">
+            <span class="stat-value" id="statStreak">0</span>
+            <span class="stat-label">Streak</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="dashboard-card">
+          <div class="card-header">
+            <h2>Today's Tasks</h2>
+            <a href="#" class="card-link" data-page="tasks">View all</a>
+          </div>
+          <div id="dashboardTasks" class="dashboard-list"></div>
+        </div>
+
+        <div class="dashboard-card">
+          <div class="card-header">
+            <h2>Upcoming Sessions</h2>
+            <a href="#" class="card-link" data-page="schedule">View schedule</a>
+          </div>
+          <div id="dashboardSchedule" class="dashboard-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUBJECTS -->
+    <section class="page" id="page-subjects">
+      <div class="page-header">
+        <h1 class="page-heading">Subjects</h1>
+        <button class="btn-primary" id="addSubjectBtn">+ Add Subject</button>
+      </div>
+      <div id="subjectsGrid" class="subjects-grid"></div>
+    </section>
+
+    <!-- TASKS -->
+    <section class="page" id="page-tasks">
+      <div class="page-header">
+        <h1 class="page-heading">Tasks</h1>
+        <button class="btn-primary" id="addTaskBtn">+ Add Task</button>
+      </div>
+      <div class="filter-row">
+        <select id="taskFilter" class="filter-select">
+          <option value="all">All</option>
+          <option value="pending">Pending</option>
+          <option value="completed">Completed</option>
+        </select>
+        <select id="taskSubjectFilter" class="filter-select">
+          <option value="all">All Subjects</option>
+        </select>
+      </div>
+      <div id="tasksContainer" class="tasks-list"></div>
+    </section>
+
+    <!-- SCHEDULE -->
+    <section class="page" id="page-schedule">
+      <div class="page-header">
+        <h1 class="page-heading">Study Schedule</h1>
+        <button class="btn-primary" id="addSessionBtn">+ Add Session</button>
+      </div>
+      <div class="week-grid" id="weekGrid"></div>
+    </section>
+
+    <!-- TIMER -->
+    <section class="page" id="page-timer">
+      <div class="page-header">
+        <h1 class="page-heading">Focus Timer</h1>
+      </div>
+      <div class="timer-container">
+        <div class="timer-card">
+          <div class="timer-display">
+            <svg class="timer-ring" viewBox="0 0 200 200">
+              <circle class="ring-bg" cx="100" cy="100" r="88" />
+              <circle class="ring-progress" id="ringProgress" cx="100" cy="100" r="88" />
+            </svg>
+            <div class="timer-time" id="timerTime">25:00</div>
+          </div>
+          <div class="timer-controls">
+            <button class="mode-btn active" data-mode="pomodoro" data-minutes="25">Pomodoro</button>
+            <button class="mode-btn" data-mode="short" data-minutes="5">Short Break</button>
+            <button class="mode-btn" data-mode="long" data-minutes="15">Long Break</button>
+          </div>
+          <div class="timer-actions">
+            <button class="timer-btn" id="timerStart">▶ Start</button>
+            <button class="timer-btn secondary" id="timerReset">⟳ Reset</button>
+          </div>
+          <div class="timer-meta">
+            <div>Pomodoros done: <span id="pomodoroCount">0</span></div>
+            <div>
+              <label for="timerTaskSelect">Focus task:</label>
+              <select id="timerTaskSelect" class="filter-select">
+                <option value="">None</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROGRESS -->
+    <section class="page" id="page-progress">
+      <div class="page-header">
+        <h1 class="page-heading">Progress</h1>
+      </div>
+      <div class="progress-grid">
+        <div class="progress-card">
+          <h2>Subject Progress</h2>
+          <div id="subjectProgress" class="progress-list"></div>
+        </div>
+        <div class="progress-card">
+          <h2>Weekly Task Completions</h2>
+          <div id="weeklyChart" class="weekly-chart"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modals -->
+  <div class="modal-overlay" id="subjectModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="subjectModalTitle">Add Subject</h2>
+        <button class="modal-close" data-modal="subjectModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="subjectId" />
+        <label>Name</label>
+        <input type="text" id="subjectName" placeholder="Subject name" />
+        <label>Description</label>
+        <textarea id="subjectDesc" rows="3" placeholder="Optional"></textarea>
+        <label>Color</label>
+        <div class="color-picker">
+          <button class="color-opt selected" data-color="#6C63FF" style="background:#6C63FF"></button>
+          <button class="color-opt" data-color="#FF6B6B" style="background:#FF6B6B"></button>
+          <button class="color-opt" data-color="#42B883" style="background:#42B883"></button>
+          <button class="color-opt" data-color="#F5A623" style="background:#F5A623"></button>
+          <button class="color-opt" data-color="#3D5AFE" style="background:#3D5AFE"></button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" data-modal="subjectModal">Cancel</button>
+        <button class="btn-primary" id="saveSubjectBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="taskModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="taskModalTitle">Add Task</h2>
+        <button class="modal-close" data-modal="taskModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="taskId" />
+        <label>Title</label>
+        <input type="text" id="taskTitle" placeholder="Task title" />
+        <label>Subject</label>
+        <select id="taskSubject" class="filter-select">
+        </select>
+        <label>Due Date</label>
+        <input type="date" id="taskDue" />
+        <label>Priority</label>
+        <select id="taskPriority" class="filter-select">
+          <option value="LOW">Low</option>
+          <option value="MEDIUM" selected>Medium</option>
+          <option value="HIGH">High</option>
+        </select>
+        <label>Notes</label>
+        <textarea id="taskNotes" rows="3" placeholder="Optional"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" data-modal="taskModal">Cancel</button>
+        <button class="btn-primary" id="saveTaskBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="sessionModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="sessionModalTitle">Add Study Session</h2>
+        <button class="modal-close" data-modal="sessionModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="sessionId" />
+        <label>Subject</label>
+        <select id="sessionSubject" class="filter-select">
+          <option value="">Select subject</option>
+        </select>
+        <label>Date</label>
+        <input type="date" id="sessionDate" />
+        <label>Start</label>
+        <input type="time" id="sessionStart" />
+        <label>End</label>
+        <input type="time" id="sessionEnd" />
+        <label>Notes</label>
+        <textarea id="sessionNotes" rows="3" placeholder="Optional"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" data-modal="sessionModal">Cancel</button>
+        <button class="btn-primary" id="saveSessionBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
